@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight Search Results</title>
+</head>
+<body>
+    <h1>Flight Search Results</h1>
+    {% if flights %}
+        <ul>
+            {% for flight in flights %}
+                <li>{{ flight.airline }} - {{ flight.destination }} - {{ flight.date }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No flights found matching your criteria.</p>
+    {% endif %}
+</body>
+</html>
+    

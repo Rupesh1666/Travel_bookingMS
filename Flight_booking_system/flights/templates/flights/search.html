@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #0044cc;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            flex: 1;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .form-group input {
+            flex: 2;
+            padding: 10px;
+            margin: 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            background-color: #0044cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #0033aa;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        h2 {
+            border-bottom: 2px solid #0044cc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        a {
+            color: #0044cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .no-results {
+            color: #666;
+            font-size: 16px;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .form-group {
+                flex-direction: column;
+            }
+            .form-group label {
+                margin-bottom: 5px;
+                margin-right: 0;
+            }
+            .form-group input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Flight Search
+    </header>
+    <div class="container">
+        <form method="get" action="{% url 'search_flights' %}">
+            <div class="form-group">
+                <label for="departure_city">Departure City:</label>
+                <input type="text" id="departure_city" name="departure_city" value="{{ request.GET.departure_city }}" placeholder="Enter departure city">
+            </div>
+            <div class="form-group">
+                <label for="arrival_city">Arrival City:</label>
+                <input type="text" id="arrival_city" name="arrival_city" value="{{ request.GET.arrival_city }}" placeholder="Enter arrival city">
+            </div>
+            <div class="form-group">
+                <label for="departure_date">Departure Date:</label>
+                <input type="date" id="departure_date" name="departure_date" value="{{ request.GET.departure_date }}">
+            </div>
+            <input type="submit" value="Search">
+        </form>
+
+        <h2>Search Results</h2>
+        {% if flights %}
+            <ul>
+                {% for flight in flights %}
+                    <li>
+                        <span>{{ flight.flight_number }} - {{ flight.departure_city }} to {{ flight.arrival_city }}</span>
+                        <a href="{% url 'flight_detail' flight.id %}">View Details</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-results">No flights found matching your criteria.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
